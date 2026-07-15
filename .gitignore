@@ -1,0 +1,12 @@
+# Local secrets and environment overrides
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+service-account*.json
+firebase-adminsdk-*.json
+
+# Local tooling
+node_modules/
+.DS_Store
