@@ -181,59 +181,21 @@ function renderSocials(profile) {
 }
 
 /* ─── Projects ───────────────────────────────────────────────── */
-function renderProjects(projects) {
+function renderProjects() {
   const container = document.getElementById('projects-list');
   if (!container) return;
-  container.innerHTML = '';
-
-  projects.forEach((project, idx) => {
-    const carouselId = 'proj-carousel-' + idx;
-    const card = document.createElement('div');
-    card.className = 'details-container color-container';
-
-    const assets = (project.media && project.media.length)
-      ? project.media
-      : (project.images || []).map(url => ({ url, type: 'image' }));
-
-    const indicators = assets.map((_, i) => {
-      const active = i === 0 ? 'class="active" aria-current="true" ' : '';
-      return '<button type="button" data-bs-target="#' + carouselId + '" data-bs-slide-to="' + i + '" ' + active + 'aria-label="Slide ' + (i + 1) + '"></button>';
-    }).join('');
-
-    const items = assets.map((asset, i) =>
-      '<div class="carousel-item' + (i === 0 ? ' active' : '') + '">' +
-      (asset.type === 'video'
-        ? '<video controls preload="metadata" class="d-block w-100"><source src="' + escapeHtml(asset.url) + '">Your browser does not support video.</video>'
-        : '<img src="' + escapeHtml(asset.url) + '" alt="' + escapeHtml(project.title) + '" class="d-block w-100">') +
-      '</div>'
-    ).join('');
-
-    card.innerHTML =
-      '<div class="article-container">' +
-      '<div id="' + carouselId + '" class="carousel slide" data-bs-ride="carousel">' +
-      '<div class="carousel-indicators">' + indicators + '</div>' +
-      '<div class="carousel-inner">' + items + '</div>' +
-      '<button class="carousel-control-prev" type="button" data-bs-target="#' + carouselId + '" data-bs-slide="prev">' +
-      '<span class="carousel-control-prev-icon" aria-hidden="true"></span>' +
-      '<span class="visually-hidden">Previous</span>' +
-      '</button>' +
-      '<button class="carousel-control-next" type="button" data-bs-target="#' + carouselId + '" data-bs-slide="next">' +
-      '<span class="carousel-control-next-icon" aria-hidden="true"></span>' +
-      '<span class="visually-hidden">Next</span>' +
-      '</button>' +
-      '</div>' +
-      '</div>' +
-      '<h2 class="experience-sub-title project-title">' + escapeHtml(project.title) + '</h2>' +
-      '<div class="btn-container">' +
-      '<button class="btn btn-color-2 project-btn">' + escapeHtml(project.linkText || 'View') + '</button>' +
-      '</div>';
-
-    card.querySelector('.project-btn').addEventListener('click', () => {
-      if (project.linkUrl) window.open(project.linkUrl, '_blank', 'noopener,noreferrer');
-    });
-
-    container.appendChild(card);
-  });
+  container.innerHTML =
+    '<article class="selected-project" aria-labelledby="nice-pickleball-title">' +
+    '<div class="selected-project__intro">' +
+    '<div><p class="selected-project__eyebrow">LIVE PRODUCT</p>' +
+    '<h2 id="nice-pickleball-title">Nice Pickleball</h2></div>' +
+    '<a class="selected-project__link" href="https://nice-pickleball.vercel.app/" target="_blank" rel="noopener noreferrer">Open project <span aria-hidden="true">↗</span></a>' +
+    '</div>' +
+    '<div class="selected-project__browser">' +
+    '<div class="selected-project__toolbar" aria-hidden="true"><span></span><span></span><span></span><p>nice-pickleball.vercel.app</p></div>' +
+    '<iframe src="https://nice-pickleball.vercel.app/" title="Nice Pickleball live website" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>' +
+    '</div>' +
+    '</article>';
 }
 
 /* ─── Contact section ────────────────────────────────────────── */
