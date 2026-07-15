@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ── Login ──────────────────────────────── */
+        #login-screen {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+        }
+
+        .login-card {
+            background: white;
+            padding: 3rem 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .login-card h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .login-card .subtitle {
+            color: #888;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+
+        .login-card input[type="email"],
+        .login-card input[type="password"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            outline: none;
+            transition: border-color 200ms;
+        }
+
+        .login-card input[type="email"]:focus,
+        .login-card input[type="password"]:focus {
+            border-color: #333;
+        }
+
+        .error-msg {
+            color: #dc3545;
+            font-size: 0.85rem;
+            min-height: 1.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        /* ── Buttons ─────────────────────────────── */
+        .btn-a {
+            display: inline-block;
+            padding: 0.65rem 1.4rem;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            transition: all 200ms ease;
+            line-height: 1.4;
+        }
+
+        .btn-primary {
+            background: #333;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #000;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #333;
+            border: 1px solid #ccc;
+        }
+
+        .btn-outline:hover {
+            background: #f0f0f0;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #b02a37;
+        }
+
+        .btn-danger-sm {
+            background: none;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            transition: background 200ms;
+            font-family: inherit;
+        }
+
+        .btn-danger-sm:hover {
+            background: #fde8ea;
+        }
+
+        .btn-full {
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-muted {
+            background: none;
+            border: 1px solid #ddd;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: inherit;
+            transition: background 200ms;
+        }
+
+        .btn-muted:hover {
+            background: #f0f0f0;
+        }
+
+        /* ── Admin Panel ─────────────────────────── */
+        #admin-panel {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-header {
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 0.875rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-header h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .admin-header-btns {
+            display: flex;
+            gap: 0.6rem;
+            align-items: center;
+        }
+
+        .admin-nav {
+            background: white;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            padding: 0 2rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 0.875rem 1.25rem;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: #777;
+            transition: all 200ms;
+            margin-bottom: -1px;
+        }
+
+        .tab-btn:hover {
+            color: #333;
+        }
+
+        .tab-btn.active {
+            color: #333;
+            border-bottom-color: #333;
+            font-weight: 600;
+        }
+
+        .admin-main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 860px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* ── Forms ───────────────────────────────── */
+        .section-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .subsection-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #555;
+            margin: 1.5rem 0 0.75rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: #555;
+            margin-bottom: 0.35rem;
+        }
+
+        .form-group label small {
+            font-weight: 400;
+            color: #999;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.6rem 0.875rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 200ms;
+            background: white;
+            color: #333;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #333;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .save-bar {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        /* ── Projects List ───────────────────────── */
+        .proj-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .proj-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .proj-num {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .proj-actions {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+        }
+
+        .projects-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ── Settings ────────────────────────────── */
+        .settings-card {
+            background: white;
+            border: 1px solid #e5e5e5;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .danger-zone {
+            border-color: #f5c2c7;
+            background: #fff9f9;
+        }
+
+        .danger-zone .section-title {
+            color: #b02a37;
+        }
+
+        /* ── Messages ────────────────────────────── */
+        .msg-error {
+            color: #dc3545;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            min-height: 1.1em;
+        }
+
+        .msg-success {
+            color: #198754;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            min-height: 1.1em;
+        }
+
+        /* ── Toast ───────────────────────────────── */
+        #global-toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(1rem);
+            background: rgba(30, 30, 30, 0.92);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-size: 0.9rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 300ms, transform 300ms;
+            z-index: 9999;
+            white-space: nowrap;
+        }
+
+        #global-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #e5e5e5;
+            margin: 1.5rem 0;
+        }
+
+        @media (max-width: 600px) {
+            .admin-header {
+                padding: 0.875rem 1rem;
+            }
+
+            .admin-nav {
+                padding: 0 1rem;
+            }
+
+            .admin-main {
+                padding: 1.25rem 1rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Login Screen ─────────────────────────────────────────── -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h1>Portfolio Admin</h1>
+            <p class="subtitle">Sign in with the designated admin email</p>
+            <form id="login-form">
+                <input type="email" id="email-input" placeholder="Admin email" autocomplete="email" required />
+                <input type="password" id="pw-input" placeholder="Password" autocomplete="current-password" required />
+                <p id="login-error" class="error-msg"></p>
+                <button type="submit" class="btn-a btn-primary btn-full">Log In</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ── Admin Panel ───────────────────────────────────────────── -->
+    <div id="admin-panel" class="hidden">
+
+        <header class="admin-header">
+            <h1>Portfolio Admin</h1>
+            <div class="admin-header-btns">
+                <a href="index.html" target="_blank" rel="noopener noreferrer" class="btn-a btn-secondary">View Site
+                    ↗</a>
+                <button id="logout-btn" class="btn-a btn-outline">Logout</button>
+            </div>
+        </header>
+
+        <nav class="admin-nav" role="tablist">
+            <button class="tab-btn active" data-tab="profile" role="tab">Profile</button>
+            <button class="tab-btn" data-tab="content" role="tab">Content</button>
+            <button class="tab-btn" data-tab="projects" role="tab">Projects</button>
+            <button class="tab-btn" data-tab="settings" role="tab">Settings</button>
+        </nav>
+
+        <main class="admin-main">
+
+            <!-- ── Profile Tab ──────────────────────── -->
+            <section id="tab-profile" class="tab-pane active" role="tabpanel">
+                <h2 class="section-title">Profile Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pf-name">Display Name</label>
+                        <input type="text" id="pf-name" placeholder="Tony Lai" />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-title">Job Title / Tagline</label>
+                        <input type="text" id="pf-title" placeholder="Software Engineer" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="pf-email">Contact Email</label>
+                    <input type="email" id="pf-email" placeholder="you@email.com" />
+                </div>
+
+                <h3 class="subsection-title">Social Links</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pf-linkedin">LinkedIn URL</label>
+                        <input type="url" id="pf-linkedin" placeholder="https://linkedin.com/in/..." />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-github">GitHub URL</label>
+                        <input type="url" id="pf-github" placeholder="https://github.com/..." />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pf-instagram">Instagram URL</label>
+                        <input type="url" id="pf-instagram" placeholder="https://instagram.com/..." />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-threads">Threads URL</label>
+                        <input type="url" id="pf-threads" placeholder="https://threads.net/@..." />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pf-facebook">Facebook URL</label>
+                        <input type="url" id="pf-facebook" placeholder="https://facebook.com/..." />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-tiktok">TikTok URL</label>
+                        <input type="url" id="pf-tiktok" placeholder="https://tiktok.com/@..." />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pf-wechat">WeChat ID <small>(clicking the icon will copy this to
+                                clipboard)</small></label>
+                        <input type="text" id="pf-wechat" placeholder="Your WeChat ID / username" />
+                    </div>
+                    <div class="form-group">
+                        <label for="pf-rednote">RedNote (小红书) URL</label>
+                        <input type="url" id="pf-rednote" placeholder="https://xiaohongshu.com/user/..." />
+                    </div>
+                </div>
+
+                <div class="save-bar">
+                    <button onclick="saveProfile()" class="btn-a btn-primary">Save Profile</button>
+                </div>
+            </section>
+
+            <!-- ── Content Tab ──────────────────────── -->
+            <section id="tab-content" class="tab-pane" role="tabpanel">
+                <h2 class="section-title">Site Content</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ct-brand">Site Name</label>
+                        <input type="text" id="ct-brand" placeholder="Tony's Portfolio" />
+                    </div>
+                    <div class="form-group">
+                        <label for="ct-copyright">Copyright Year</label>
+                        <input type="number" id="ct-copyright" min="2000" max="2100" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ct-profile-image">Profile Photo URL / Path</label>
+                    <input type="text" id="ct-profile-image" placeholder="./assets/tony-propic.png or https://..." />
+                </div>
+                <div class="form-group">
+                    <label for="ct-profile-upload">Upload Profile Photo <small>(image files up to 10 MB)</small></label>
+                    <input type="file" id="ct-profile-upload" accept="image/*" />
+                    <p id="profile-upload-status" class="msg-success"></p>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ct-about-heading">About Section Heading</label>
+                        <input type="text" id="ct-about-heading" />
+                    </div>
+                    <div class="form-group">
+                        <label for="ct-skills-heading">Skills Section Heading</label>
+                        <input type="text" id="ct-skills-heading" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ct-projects-heading">Projects Section Heading</label>
+                    <input type="text" id="ct-projects-heading" />
+                </div>
+
+                <h3 class="subsection-title">About Cards</h3>
+                <div class="form-group">
+                    <label for="ct-experience-title">Experience Card Title</label>
+                    <input type="text" id="ct-experience-title" />
+                </div>
+                <div class="form-group">
+                    <label for="ct-experience-copy">Experience Card Text <small>(one paragraph per line)</small></label>
+                    <textarea id="ct-experience-copy" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ct-education-title">Education Card Title</label>
+                    <input type="text" id="ct-education-title" />
+                </div>
+                <div class="form-group">
+                    <label for="ct-education-copy">Education Card Text <small>(one paragraph per line)</small></label>
+                    <textarea id="ct-education-copy" rows="5"></textarea>
+                </div>
+
+                <h3 class="subsection-title">Technical Skills</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ct-frontend-heading">Frontend Category Heading</label>
+                        <input type="text" id="ct-frontend-heading" />
+                    </div>
+                    <div class="form-group">
+                        <label for="ct-backend-heading">Backend Category Heading</label>
+                        <input type="text" id="ct-backend-heading" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ct-analytics-heading">Analytics Category Heading</label>
+                    <input type="text" id="ct-analytics-heading" />
+                </div>
+                <div class="form-group">
+                    <label for="ct-frontend-skills">Frontend Skills <small>(one skill per line)</small></label>
+                    <textarea id="ct-frontend-skills" rows="6"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ct-backend-skills">Backend Skills <small>(one skill per line)</small></label>
+                    <textarea id="ct-backend-skills" rows="6"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="ct-analytics-skills">Data Analytics Skills <small>(one skill per line)</small></label>
+                    <textarea id="ct-analytics-skills" rows="6"></textarea>
+                </div>
+                <div class="save-bar">
+                    <button onclick="saveContent()" class="btn-a btn-primary">Save Content</button>
+                </div>
+            </section>
+
+            <!-- ── Projects Tab ─────────────────────── -->
+            <section id="tab-projects" class="tab-pane" role="tabpanel">
+                <div class="projects-header">
+                    <h2 class="section-title" style="margin:0;border:none;padding:0">Projects</h2>
+                    <button onclick="addNewProject()" class="btn-a btn-secondary">+ Add Project</button>
+                </div>
+                <div id="projects-admin-list"></div>
+            </section>
+
+            <!-- ── Settings Tab ─────────────────────── -->
+            <section id="tab-settings" class="tab-pane" role="tabpanel">
+                <div class="settings-card">
+                    <h2 class="section-title">Change Password</h2>
+                    <div class="form-group">
+                        <label for="set-current-pw">Current Password</label>
+                        <input type="password" id="set-current-pw" autocomplete="current-password" />
+                    </div>
+                    <div class="form-group">
+                        <label for="set-new-pw">New Password <small>(min. 6 characters)</small></label>
+                        <input type="password" id="set-new-pw" autocomplete="new-password" />
+                    </div>
+                    <div class="form-group">
+                        <label for="set-confirm-pw">Confirm New Password</label>
+                        <input type="password" id="set-confirm-pw" autocomplete="new-password" />
+                    </div>
+                    <p id="settings-msg" class="msg-error"></p>
+                    <div class="save-bar">
+                        <button onclick="changePassword()" class="btn-a btn-primary">Update Password</button>
+                    </div>
+                </div>
+
+                <div class="settings-card">
+                    <h2 class="section-title">Data Management</h2>
+                    <p style="font-size:0.85rem;color:#666;margin-bottom:1rem;">
+                        Export your current portfolio data as JSON, or reset everything back to the original defaults.
+                    </p>
+                    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+                        <button onclick="exportData()" class="btn-a btn-secondary">Export Data (JSON)</button>
+                    </div>
+                </div>
+
+                <div class="settings-card danger-zone">
+                    <h2 class="section-title">Danger Zone</h2>
+                    <p style="font-size:0.85rem;color:#666;margin-bottom:1rem;">
+                        This will reset all portfolio edits to the original defaults. This action cannot be undone.
+                    </p>
+                    <button onclick="resetData()" class="btn-a btn-danger">Reset to Defaults</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <div id="global-toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="admin.js"></script>
+</body>
+
+</html>
