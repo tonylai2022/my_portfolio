@@ -575,6 +575,10 @@ function showToast(message) {
 
 /* ─── Init ───────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
+    if (/\/admin\.html$/.test(location.pathname)) {
+        history.replaceState(null, '', location.pathname.replace(/admin\.html$/, 'admin') + location.search + location.hash);
+    }
+
     document.getElementById('login-form').addEventListener('submit', handleLogin);
     document.getElementById('logout-btn').addEventListener('click', logout);
 
